@@ -1,11 +1,8 @@
 #pragma once
 
-#include <cassert>
-#include <iostream>
-#include <list>
 #include <map>
-#include <optional>
 #include <string>
+#include <string_view>
 #include <unordered_map>
 
 #include "Level.hpp"
@@ -19,8 +16,6 @@ class OrderBook
     void AddOrder(Order& order);
     void CancelOrder(OrderId orderId);
     void MatchOrders();
-
-    void Print() const noexcept;
 
     [[nodiscard]] const Level& GetLevelInfo(OrderSide side, Price price) const;
     [[nodiscard]] std::size_t GetOrdersCount() const noexcept;

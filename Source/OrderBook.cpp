@@ -1,16 +1,8 @@
 #include <cassert>
-#include <iostream>
-#include <list>
-#include <map>
-#include <optional>
-#include <string>
-#include <unordered_map>
 
 #include "Level.hpp"
 #include "Order.hpp"
 #include "OrderBook.hpp"
-
-// Looking to optimize copy and move operations
 
 void OrderBook::AddOrder(Order& order)
 {
@@ -109,21 +101,6 @@ void OrderBook::MatchOrders()
     if (askLevel.IsEmpty())
     {
         m_Asks.erase(askPrice);
-    }
-}
-
-void OrderBook::Print() const noexcept
-{
-    std::cout << "Bids:" << std::endl;
-    for (const auto& [price, level] : m_Bids)
-    {
-        std::cout << "Price: " << price << ", volume: " << level.GetVolume() << std::endl;
-    }
-
-    std::cout << "Asks:" << std::endl;
-    for (const auto& [price, level] : m_Asks)
-    {
-        std::cout << "Price: " << price << ", volume: " << level.GetVolume() << std::endl;
     }
 }
 

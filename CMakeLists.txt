@@ -45,6 +45,8 @@ include_directories(${PROJECT_SOURCE_DIR}/Source)
 include_directories(${PROJECT_SOURCE_DIR})
 
 set(SOURCES
+    Source/Level.cpp
+    Source/Order.cpp
     Source/OrderBook.cpp
 )
 

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 using OrderId = int64_t;
 using Price = int32_t;
 using Quantity = int32_t;
@@ -31,50 +33,17 @@ class Order
     {
     }
 
-    void Fill(Quantity quantity) noexcept
-    {
-        m_RemainingQuantity -= quantity;
-    }
+    void Fill(Quantity quantity) noexcept;
 
-    [[nodiscard]] bool IsFilled() const noexcept
-    {
-        return m_RemainingQuantity == 0;
-    }
+    [[nodiscard]] OrderId GetId() const noexcept;
+    [[nodiscard]] Quantity GetRemainingQuantity() const noexcept;
+    [[nodiscard]] OrderSide GetSide() const noexcept;
+    [[nodiscard]] Price GetPrice() const noexcept;
+    [[nodiscard]] Quantity GetQuantity() const noexcept;
 
-    [[nodiscard]] OrderId GetId() const noexcept
-    {
-        return m_Id;
-    }
-
-    [[nodiscard]] Quantity GetRemainingQuantity() const noexcept
-    {
-        return m_RemainingQuantity;
-    }
-
-    [[nodiscard]] OrderSide GetSide() const noexcept
-    {
-        return m_Side;
-    }
-
-    [[nodiscard]] Price GetPrice() const noexcept
-    {
-        return m_Price;
-    }
-
-    [[nodiscard]] Quantity GetQuantity() const noexcept
-    {
-        return m_Quantity;
-    }
-
-    [[nodiscard]] bool IsBuy() const noexcept
-    {
-        return m_Side == OrderSide::Buy;
-    }
-
-    [[nodiscard]] bool IsSell() const noexcept
-    {
-        return m_Side == OrderSide::Sell;
-    }
+    [[nodiscard]] bool IsFilled() const noexcept;
+    [[nodiscard]] bool IsBuy() const noexcept;
+    [[nodiscard]] bool IsSell() const noexcept;
 
   private:
     OrderId m_Id;
