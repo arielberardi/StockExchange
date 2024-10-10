@@ -94,7 +94,8 @@
         "syncstream": "cpp",
         "thread": "cpp",
         "typeindex": "cpp",
-        "valarray": "cpp"
+        "valarray": "cpp",
+        "cassert": "cpp"
     },
     "editor.insertSpaces": true,
     "editor.comments.insertSpace": true,

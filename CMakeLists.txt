@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.30.3)
-project(MatchingEngine VERSION 1.0.0 LANGUAGES CXX)
+project(StokeExchange VERSION 1.0.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -14,7 +14,6 @@ include_directories(${Boost_INCLUDE_DIR})
 link_directories(${Boost_LIBRARY_DIRS})
 
 set(BOOST_LIBRARIES
-    boost_asio
     boost_exception
 )
 
@@ -46,6 +45,7 @@ include_directories(${PROJECT_SOURCE_DIR}/Source)
 include_directories(${PROJECT_SOURCE_DIR})
 
 set(SOURCES
+    Source/OrderBook.cpp
 )
 
 set(LIBRARIES
@@ -61,6 +61,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE ${LIBRARIES})
 enable_testing()
 
 set(TEST_FILES
+    OrderBook
 )
 
 foreach(file ${TEST_FILES})
