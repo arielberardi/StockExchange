@@ -77,8 +77,8 @@ void OrderBook::MatchOrders()
         bid.Fill(quantity);
         ask.Fill(quantity);
 
-        bidLevel.ReduceVolumen(quantity);
-        askLevel.ReduceVolumen(quantity);
+        bidLevel.ReduceVolume(quantity);
+        askLevel.ReduceVolume(quantity);
 
         if (bid.IsFilled())
         {

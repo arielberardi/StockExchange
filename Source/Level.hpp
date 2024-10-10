@@ -13,7 +13,7 @@ class Level
     void RemoveOrder(OrdersListIterator iterator) noexcept;
     OrdersListIterator InsertOrder(Order& order);
 
-    void ReduceVolumen(Quantity quantity);
+    void ReduceVolume(Quantity quantity);
 
     [[nodiscard]] OrdersList& GetOrders() noexcept;
     [[nodiscard]] OrdersList GetOrders() const noexcept;
@@ -23,5 +23,5 @@ class Level
 
   private:
     OrdersList m_Orders{};
-    Quantity m_Volumen{};
+    Quantity m_Volume{};
 };
