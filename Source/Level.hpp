@@ -51,51 +51,6 @@ class Level
         return m_Volumen;
     }
 
-    // Level()
-    // {
-    //     std::cout << "Constructor" << std::endl;
-    // }
-
-    // ~Level() = default;
-
-    // Level(const Level& level) : m_Orders{level.m_Orders}, m_Volumen{level.m_Volumen}
-    // {
-    //     std::cout << "Copy constructor" << std::endl;
-    // }
-
-    // Level(Level&& level) : m_Orders{std::move(level.m_Orders)}, m_Volumen{level.m_Volumen}
-    // {
-    //     std::cout << "Move constructor" << std::endl;
-    // }
-
-    // Level& operator=(const Level& other)
-    // {
-    //     std::cout << "Copy assignment" << std::endl;
-
-    //     if (this == &other)
-    //     {
-    //         return *this;
-    //     }
-
-    //     m_Orders = other.m_Orders;
-    //     m_Volumen = other.m_Volumen;
-    //     return *this;
-    // }
-
-    // Level& operator=(Level&& other)
-    // {
-    //     std::cout << "Move assignment" << std::endl;
-
-    //     if (this == &other)
-    //     {
-    //         return *this;
-    //     }
-
-    //     m_Orders = std::move(other.m_Orders);
-    //     m_Volumen = other.m_Volumen;
-    //     return *this;
-    // }
-
   private:
     OrdersList m_Orders{};
     Quantity m_Volumen{};

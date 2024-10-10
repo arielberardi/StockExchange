@@ -29,64 +29,6 @@ class Order
         : m_Id{id}, m_Price{price}, m_Quantity{quantity}, m_RemainingQuantity{quantity},
           m_Side{side}, m_Type{type}
     {
-        std::cout << "Order Constructor" << this << std::endl;
-    }
-
-    ~Order()
-    {
-        std::cout << "Order Deleted" << this << std::endl;
-    };
-
-    Order(const Order& order)
-        : m_Id{order.m_Id}, m_Price{order.m_Price}, m_Quantity{order.m_Quantity},
-          m_RemainingQuantity{order.m_RemainingQuantity}, m_Side{order.m_Side}, m_Type{order.m_Type}
-    {
-        std::cout << "Order Copy constructor" << this << std::endl;
-    }
-
-    Order(Order&& order)
-        : m_Id{order.m_Id}, m_Price{order.m_Price}, m_Quantity{order.m_Quantity},
-          m_RemainingQuantity{order.m_RemainingQuantity}, m_Side{order.m_Side}, m_Type{order.m_Type}
-    {
-        std::cout << "Order Move constructor" << this << std::endl;
-    }
-
-    Order& operator=(Order& other)
-    {
-        std::cout << "Order Copy assignment" << this << std::endl;
-
-        if (this == &other)
-        {
-            return *this;
-        }
-
-        m_Id = other.m_Id;
-        m_Price = other.m_Price;
-        m_Quantity = other.m_Quantity;
-        m_RemainingQuantity = other.m_RemainingQuantity;
-        m_Side = other.m_Side;
-        m_Type = other.m_Type;
-
-        return *this;
-    }
-
-    Order& operator=(Order&& other)
-    {
-        std::cout << "Order Move assignment" << std::endl;
-
-        if (this == &other)
-        {
-            return *this;
-        }
-
-        m_Id = other.m_Id;
-        m_Price = other.m_Price;
-        m_Quantity = other.m_Quantity;
-        m_RemainingQuantity = other.m_RemainingQuantity;
-        m_Side = other.m_Side;
-        m_Type = other.m_Type;
-
-        return *this;
     }
 
     void Fill(Quantity quantity) noexcept

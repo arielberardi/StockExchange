@@ -13,10 +13,5 @@ int main()
     orderBook.AddOrder(order1);
     orderBook.AddOrder(order2);
 
-    // auto start = std::chrono::high_resolution_clock::now();
-
     orderBook.MatchOrders();
-
-    // auto end = std::chrono::high_resolution_clock::now();
-    // auto delta = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
 }
