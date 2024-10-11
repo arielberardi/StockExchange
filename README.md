@@ -1,13 +1,13 @@
 # Stock Exchange
 
-Study case of a Desing and Implementation of a Stock Exchange application.
+Study case of a design and Implementation of a Stock Exchange application.
 
 Consideration:
 - It has to be fast (low-latency) and accurate in order to provide fairness to the traders.
 - It needs to receive trading requests (bids and asks) from external application (FIX over TCP/IP)
 - It needs to feed Market Data for external application to use (FAST over Multicast UDP)
 
-Some usefull information i used to build this:
+Some useful information i used to build this:
 - https://quant.stackexchange.com/questions/3783/what-is-an-efficient-data-structure-to-model-order-book
 - https://github.com/Kautenja/limit-order-book/blob/master/notes/lob.md
 - https://github.com/charles-cooper/itch-order-book
@@ -40,7 +40,7 @@ To build and run, you will need:
 1. **Clone the repository**:
    ```bash
    git clone https://github.com/arielberardi/StockeExchange.git
-   cd StockeExchange
+   cd StockExchange
    ```
 
 2. **Configure the project with CMake**:
@@ -56,7 +56,7 @@ To build and run, you will need:
    ```
 
 4. **Run Tests**:
-   StockeExchange uses Google Test for unit testing. To run the tests:
+   StockExchange uses Google Test for unit testing. To run the tests:
    ```bash
    ctest
    ```
@@ -66,7 +66,7 @@ To build and run, you will need:
 Once built, you can run the application from the `build` directory:
 
 ```bash
-./StockeExchange
+./StockExchange
 ```
 
 ## License
@@ -75,7 +75,7 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ## Disclaimer
 
-**StockeExchange is intended for educational and practical purposes only. It is not a professional application nor is it intended for use in real-world cases.**
+**StockExchange is intended for educational and practical purposes only. It is not a professional application nor is it intended for use in real-world cases.**
 
 ## Contact
 
