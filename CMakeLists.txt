@@ -63,6 +63,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE ${LIBRARIES})
 enable_testing()
 
 set(TEST_FILES
+    Level
     OrderBook
 )
 

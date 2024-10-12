@@ -1,5 +1,4 @@
 #include <gtest/gtest.h>
-#include <optional>
 
 #include "Source/OrderBook.hpp"
 
