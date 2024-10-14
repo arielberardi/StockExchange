@@ -109,7 +109,7 @@
     "editor.useTabStops": true,
     "editor.bracketPairColorization.enabled": true,
     "editor.rulers": [
-        120
+        100
     ],
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "xaver.clang-format",

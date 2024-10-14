@@ -48,6 +48,7 @@ set(SOURCES
     Source/Level.cpp
     Source/Order.cpp
     Source/OrderBook.cpp
+    Source/TCPServer.cpp
 )
 
 set(LIBRARIES
