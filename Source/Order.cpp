@@ -44,3 +44,8 @@ void Order::Fill(Quantity quantity) noexcept
 {
     return m_Side == OrderSide::Sell;
 }
+
+[[nodiscard]] bool Order::IsCancel() const noexcept
+{
+    return m_Type == OrderType::Cancel;
+}

@@ -16,7 +16,6 @@ void OrderBookThread(std::queue<Order>& queue)
 {
     OrderBook orderBook{"AAPL"};
 
-    // OrderBook Thread
     while (true)
     {
         {
@@ -24,7 +23,16 @@ void OrderBookThread(std::queue<Order>& queue)
             {
                 std::scoped_lock lock(ordersQueueMutex);
                 Order& order = queue.front();
-                orderBook.AddOrder(order);
+
+                if (order.IsCancel())
+                {
+                    orderBook.CancelOrder(order.GetId());
+                }
+                else
+                {
+                    orderBook.AddOrder(order);
+                }
+
                 queue.pop();
             }
         }

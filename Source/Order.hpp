@@ -16,6 +16,7 @@ enum class OrderType
     FillOrKill,
     GoodTillTime,
     GoodTillDate,
+    Cancel,
 };
 
 enum class OrderSide
@@ -44,6 +45,7 @@ class Order
     [[nodiscard]] bool IsFilled() const noexcept;
     [[nodiscard]] bool IsBuy() const noexcept;
     [[nodiscard]] bool IsSell() const noexcept;
+    [[nodiscard]] bool IsCancel() const noexcept;
 
   private:
     OrderId m_Id;
