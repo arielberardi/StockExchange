@@ -17,9 +17,12 @@ void TCPClient::DoRead()
 
     auto handler = [this, self](const ErrorCode& error, std::size_t length)
     {
-        if (error && error != boost::asio::error::eof)
+        if (error)
         {
-            std::cerr << "Error on received: " << error.message() << std::endl;
+            if (error != boost::asio::error::eof)
+            {
+                std::cerr << "Error on received: " << error.message() << std::endl;
+            }
         }
         else
         {

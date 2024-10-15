@@ -5,6 +5,7 @@
 #include <random>
 #include <thread>
 
+#include "FixParser.hpp"
 #include "Level.hpp"
 #include "Order.hpp"
 #include "OrderBook.hpp"
@@ -23,6 +24,8 @@ void OrderBookThread(std::queue<Order>& queue)
             {
                 std::scoped_lock lock(ordersQueueMutex);
                 Order& order = queue.front();
+
+                std::cout << "Order received: " << order << std::endl;
 
                 if (order.IsCancel())
                 {
@@ -45,14 +48,15 @@ void RequestsThread(std::queue<Order>& queue, boost::asio::io_context& context)
 {
     try
     {
-        TCPClient::Callback dataReceivedCallback = [](const uint8_t* data, const int length)
+        TCPClient::Callback dataReceivedCallback = [&](const char* data, const std::size_t length)
         {
-            // Parse FIX protocol to Order object
-            // Add result to the queue
-            // {
-            //     std::scoped_lock lock(ordersQueueMutex);
-            //     queue.emplace(order);
-            // }
+            const std::string message(data, length);
+            Order order = FixMessageToOrder(message);
+
+            {
+                std::scoped_lock lock(ordersQueueMutex);
+                queue.push(order);
+            }
         };
 
         TCPServer server(context, 8142, dataReceivedCallback);

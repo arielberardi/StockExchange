@@ -1,22 +1,19 @@
 #pragma once
 
 #include <cstdint>
+#include <iostream>
 
-using OrderId = int64_t;
+using OrderId = unsigned long;
 using Price = int32_t;
 using Quantity = int32_t;
 
 enum class OrderType
 {
-    Market,
+    Market = 1,
     Limit,
     Stop,
     StopLimit,
-    FillAndKill,
-    FillOrKill,
-    GoodTillTime,
-    GoodTillDate,
-    Cancel,
+    Cancel
 };
 
 enum class OrderSide
@@ -46,6 +43,8 @@ class Order
     [[nodiscard]] bool IsBuy() const noexcept;
     [[nodiscard]] bool IsSell() const noexcept;
     [[nodiscard]] bool IsCancel() const noexcept;
+
+    friend std::ostream& operator<<(std::ostream& os, const Order& order);
 
   private:
     OrderId m_Id;

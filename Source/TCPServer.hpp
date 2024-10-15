@@ -5,9 +5,9 @@
 class TCPClient : public std::enable_shared_from_this<TCPClient>
 {
   public:
-    using Callback = std::function<void(const uint8_t* data, const int length)>;
+    using Callback = std::function<void(const char* data, const std::size_t length)>;
 
-    static constexpr int kMaxData = 1024;
+    static constexpr std::size_t kMaxData = 1024;
     typedef std::shared_ptr<TCPClient> Pointer;
 
     TCPClient(boost::asio::ip::tcp::socket socket, Callback dataReceivedCallback)
@@ -19,7 +19,7 @@ class TCPClient : public std::enable_shared_from_this<TCPClient>
 
   private:
     boost::asio::ip::tcp::socket m_Socket;
-    uint8_t m_Data[kMaxData];
+    char m_Data[kMaxData];
     Callback m_DataReceivedCallback;
 
     void DoRead();

@@ -45,6 +45,7 @@ include_directories(${PROJECT_SOURCE_DIR}/Source)
 include_directories(${PROJECT_SOURCE_DIR})
 
 set(SOURCES
+    Source/FixParser.cpp
     Source/Level.cpp
     Source/Order.cpp
     Source/OrderBook.cpp
@@ -64,6 +65,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE ${LIBRARIES})
 enable_testing()
 
 set(TEST_FILES
+    FixParser
     Level
     OrderBook
 )

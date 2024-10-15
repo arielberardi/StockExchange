@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "Order.hpp"
 
 void Order::Fill(Quantity quantity) noexcept
@@ -48,4 +50,11 @@ void Order::Fill(Quantity quantity) noexcept
 [[nodiscard]] bool Order::IsCancel() const noexcept
 {
     return m_Type == OrderType::Cancel;
+}
+
+std::ostream& operator<<(std::ostream& os, const Order& order)
+{
+    std::string side = (order.m_Side == OrderSide::Buy) ? "Buy" : "Sell";
+    os << order.m_Id << ", " << order.m_Price << ", " << order.m_Quantity << ", " << side;
+    return os;
 }
