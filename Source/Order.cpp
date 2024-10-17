@@ -47,9 +47,19 @@ void Order::Fill(Quantity quantity) noexcept
     return m_Side == OrderSide::Sell;
 }
 
+[[nodiscard]] bool Order::IsNew() const noexcept
+{
+    return m_Action == OrderAction::New;
+}
+
+[[nodiscard]] bool Order::IsUpdate() const noexcept
+{
+    return m_Action == OrderAction::Update;
+}
+
 [[nodiscard]] bool Order::IsCancel() const noexcept
 {
-    return m_Type == OrderType::Cancel;
+    return m_Action == OrderAction::Cancel;
 }
 
 std::ostream& operator<<(std::ostream& os, const Order& order)

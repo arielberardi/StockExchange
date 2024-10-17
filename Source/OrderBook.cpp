@@ -3,6 +3,7 @@
 #include "Level.hpp"
 #include "Order.hpp"
 #include "OrderBook.hpp"
+#include "Trade.hpp"
 
 void OrderBook::AddOrder(Order& order)
 {
@@ -17,6 +18,12 @@ void OrderBook::AddOrder(Order& order)
     {
         m_Orders[id] = m_Asks[price].InsertOrder(order);
     }
+
+    if (m_TradeCallback)
+    {
+        Trade trade{price, order.GetQuantity(), order.GetSide()};
+        m_TradeCallback(m_Symbol, m_Bids, m_Asks, trade);
+    }
 }
 
 void OrderBook::CancelOrder(OrderId orderId)
@@ -25,6 +32,7 @@ void OrderBook::CancelOrder(OrderId orderId)
 
     OrdersListIterator orderIterator = m_Orders.at(orderId);
     Price price = orderIterator->GetPrice();
+    Trade trade{price, orderIterator->GetQuantity(), orderIterator->GetSide()};
 
     m_Orders.erase(orderId);
 
@@ -48,6 +56,11 @@ void OrderBook::CancelOrder(OrderId orderId)
             m_Asks.erase(price);
         }
     }
+
+    if (m_TradeCallback)
+    {
+        m_TradeCallback(m_Symbol, m_Bids, m_Asks, trade);
+    }
 }
 
 void OrderBook::MatchOrders()
@@ -70,6 +83,7 @@ void OrderBook::MatchOrders()
 
     while (!bidLevel.IsEmpty() && !askLevel.IsEmpty())
     {
+        Trade trade;
         Order& bid = bidOrders.front();
         Order& ask = askOrders.front();
         Quantity quantity = std::min(bid.GetRemainingQuantity(), ask.GetRemainingQuantity());
@@ -80,16 +94,26 @@ void OrderBook::MatchOrders()
         bidLevel.ReduceVolume(quantity);
         askLevel.ReduceVolume(quantity);
 
+        trade.price = bidPrice;
+        trade.quantity = quantity;
+
         if (bid.IsFilled())
         {
+            trade.side = OrderSide::Buy;
             m_Orders.erase(bid.GetId());
             bidOrders.pop_front();
         }
 
         if (ask.IsFilled())
         {
+            trade.side = OrderSide::Sell;
             m_Orders.erase(ask.GetId());
             askOrders.pop_front();
+        }
+
+        if (m_TradeCallback)
+        {
+            m_TradeCallback(m_Symbol, m_Bids, m_Asks, trade);
         }
     }
 
@@ -121,4 +145,9 @@ const Order& OrderBook::GetLastOrder(OrderSide side) const
 
     auto& [_, level] = side == OrderSide::Buy ? *m_Bids.begin() : *m_Asks.begin();
     return level.GetOrders().back();
+}
+
+void OrderBook::SetTradeNotification(OrderBook::TradeCallback callback)
+{
+    m_TradeCallback = callback;
 }

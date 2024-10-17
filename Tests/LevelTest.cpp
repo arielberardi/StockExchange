@@ -4,7 +4,7 @@
 
 TEST(Level, InsertOrder)
 {
-    Order order{1, 100, 100, OrderSide::Buy, OrderType::Market};
+    Order order{1, OrderAction::New, 100, 100, OrderSide::Buy, OrderType::Market};
 
     Level level{};
     level.InsertOrder(order);
@@ -16,7 +16,7 @@ TEST(Level, InsertOrder)
 
 TEST(Level, RemoveOrder)
 {
-    Order order{1, 100, 100, OrderSide::Buy, OrderType::Market};
+    Order order{1, OrderAction::New, 100, 100, OrderSide::Buy, OrderType::Market};
 
     Level level{};
     OrdersListIterator orderIterator = level.InsertOrder(order);
@@ -29,7 +29,7 @@ TEST(Level, RemoveOrder)
 
 TEST(Level, ReduceVolume)
 {
-    Order order{1, 100, 100, OrderSide::Buy, OrderType::Market};
+    Order order{1, OrderAction::New, 100, 100, OrderSide::Buy, OrderType::Market};
 
     Level level{};
     level.InsertOrder(order);
@@ -43,7 +43,7 @@ TEST(Level, ReduceVolume)
 
 TEST(Level, IsEmpty)
 {
-    Order order{1, 100, 100, OrderSide::Buy, OrderType::Market};
+    Order order{1, OrderAction::New, 100, 100, OrderSide::Buy, OrderType::Market};
     Level level{};
 
     EXPECT_TRUE(level.IsEmpty());

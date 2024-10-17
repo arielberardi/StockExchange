@@ -39,6 +39,20 @@ using FixHashMap = std::unordered_map<int, std::string>;
     return map;
 }
 
+[[nodiscard]] static OrderType FixOrderTypeToEnum(std::string_view value)
+{
+    if (value == "1")
+        return OrderType::Market;
+    if (value == "2")
+        return OrderType::Limit;
+    if (value == "3")
+        return OrderType::Stop;
+    if (value == "4")
+        return OrderType::StopLimit;
+
+    return static_cast<OrderType>(0);
+}
+
 [[nodiscard]] Order FixMessageToOrder(std::string_view message)
 {
     FixHashMap messageHash = FixMessageToHashMap(message);
@@ -47,19 +61,9 @@ using FixHashMap = std::unordered_map<int, std::string>;
     Price price = std::stoi(messageHash.at(44));
     Quantity quantity = std::stoi(messageHash.at(38));
     OrderSide side = messageHash.at(54) == "1" ? OrderSide::Buy : OrderSide::Sell;
+    OrderType type = FixOrderTypeToEnum(messageHash.at(40));
+    OrderAction action = messageHash.at(35) == "F" ? OrderAction::New : OrderAction::Cancel;
 
-    int orderTypeValue = std::stoi(messageHash.at(40));
-    orderTypeValue = std::clamp(orderTypeValue,
-                                static_cast<int>(OrderType::Market),
-                                static_cast<int>(OrderType::StopLimit));
-
-    OrderType type = static_cast<OrderType>(orderTypeValue);
-
-    if (messageHash.at(35) == "F")
-    {
-        type = OrderType::Cancel;
-    }
-
-    Order order{id, price, quantity, side, type};
+    Order order{id, action, price, quantity, side, type};
     return order;
 }

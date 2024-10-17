@@ -7,13 +7,19 @@ using OrderId = unsigned long;
 using Price = int32_t;
 using Quantity = int32_t;
 
+enum class OrderAction
+{
+    New,
+    Cancel,
+    Update
+};
+
 enum class OrderType
 {
     Market = 1,
     Limit,
     Stop,
-    StopLimit,
-    Cancel
+    StopLimit
 };
 
 enum class OrderSide
@@ -25,9 +31,14 @@ enum class OrderSide
 class Order
 {
   public:
-    Order(OrderId id, Price price, Quantity quantity, OrderSide side, OrderType type)
-        : m_Id{id}, m_Price{price}, m_Quantity{quantity}, m_RemainingQuantity{quantity},
-          m_Side{side}, m_Type{type}
+    Order(OrderId id,
+          OrderAction action,
+          Price price,
+          Quantity quantity,
+          OrderSide side,
+          OrderType type)
+        : m_Id{id}, m_Action{action}, m_Price{price}, m_Quantity{quantity},
+          m_RemainingQuantity{quantity}, m_Side{side}, m_Type{type}
     {
     }
 
@@ -42,6 +53,9 @@ class Order
     [[nodiscard]] bool IsFilled() const noexcept;
     [[nodiscard]] bool IsBuy() const noexcept;
     [[nodiscard]] bool IsSell() const noexcept;
+
+    [[nodiscard]] bool IsNew() const noexcept;
+    [[nodiscard]] bool IsUpdate() const noexcept;
     [[nodiscard]] bool IsCancel() const noexcept;
 
     friend std::ostream& operator<<(std::ostream& os, const Order& order);
@@ -53,4 +67,5 @@ class Order
     Quantity m_RemainingQuantity;
     OrderSide m_Side;
     OrderType m_Type;
+    OrderAction m_Action;
 };
