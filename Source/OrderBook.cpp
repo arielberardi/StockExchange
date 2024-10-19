@@ -22,7 +22,7 @@ void OrderBook::AddOrder(Order& order)
     if (m_TradeCallback)
     {
         Trade trade{price, order.GetQuantity(), order.GetSide()};
-        m_TradeCallback(m_Symbol, m_Bids, m_Asks, trade);
+        m_TradeCallback(m_Symbol, trade);
     }
 }
 
@@ -59,7 +59,7 @@ void OrderBook::CancelOrder(OrderId orderId)
 
     if (m_TradeCallback)
     {
-        m_TradeCallback(m_Symbol, m_Bids, m_Asks, trade);
+        m_TradeCallback(m_Symbol, trade);
     }
 }
 
@@ -113,7 +113,7 @@ void OrderBook::MatchOrders()
 
         if (m_TradeCallback)
         {
-            m_TradeCallback(m_Symbol, m_Bids, m_Asks, trade);
+            m_TradeCallback(m_Symbol, trade);
         }
     }
 

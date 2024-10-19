@@ -15,10 +15,7 @@ class OrderBook
   public:
     using BidsMap = std::map<Price, Level, std::greater<Price>>;
     using AsksMap = std::map<Price, Level, std::less<Price>>;
-    using TradeCallback = std::function<void(std::string_view symbol,
-                                             const BidsMap& bids,
-                                             const AsksMap& asks,
-                                             const Trade& trade)>;
+    using TradeCallback = std::function<void(std::string_view symbol, const Trade& trade)>;
 
     OrderBook(std::string_view symbol) : m_Symbol{symbol} {};
 

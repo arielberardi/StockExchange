@@ -5,6 +5,7 @@
 #include <random>
 #include <thread>
 
+#include "FASTEncoder.hpp"
 #include "FixParser.hpp"
 #include "Level.hpp"
 #include "MarketFeedMessage.hpp"
@@ -12,19 +13,24 @@
 #include "OrderBook.hpp"
 #include "TCPServer.hpp"
 #include "Trade.hpp"
+#include "UDPMulticast.hpp"
 
-std::mutex ordersQueueMutex;
-std::mutex marketFeedQueueMutex;
+constexpr char kMulticastIP[] = "172.19.15.255";
+constexpr int kFIXPort = 10000;
+constexpr int kFASTPort = 10001;
+
+static std::mutex ordersQueueMutex;
+static std::mutex marketFeedQueueMutex;
 
 void OrderBookThread(std::queue<Order>& queue, std::queue<MarketFeedMessage>& marketFeed)
 {
     OrderBook orderBook{"AAPL"};
 
-    orderBook.SetTradeNotification([&marketFeed](std::string_view symbol,
-                                                 const OrderBook::BidsMap& bids,
-                                                 const OrderBook::AsksMap& asks,
-                                                 const Trade& trade)
-                                   { marketFeed.emplace(symbol, trade, bids, asks); });
+    orderBook.SetTradeNotification(
+        [&marketFeed](std::string_view symbol, const Trade& trade)
+        {
+            marketFeed.emplace(symbol, trade);
+        });
 
     while (true)
     {
@@ -66,7 +72,7 @@ void RequestsThread(std::queue<Order>& queue)
             }
         };
 
-        TCPServer server(context, 8142, dataReceivedCallback);
+        TCPServer server(context, kFIXPort, dataReceivedCallback);
         context.run();
     }
     catch (const std::exception& e)
@@ -80,19 +86,26 @@ void RequestsThread(std::queue<Order>& queue)
 void MarketFeedThread(std::queue<MarketFeedMessage>& queue)
 {
     boost::asio::io_context context;
+    UDPMulticast udpClient{context, kMulticastIP, kFASTPort};
 
     try
     {
-        MarketFeedMessage message{};
-
-        if (!queue.empty())
+        while (true)
         {
-            std::scoped_lock lock(marketFeedQueueMutex);
-            message = std::move(queue.front());
-            queue.pop();
-        }
+            MarketFeedMessage message{};
 
-        context.run();
+            if (!queue.empty())
+            {
+                std::scoped_lock lock(marketFeedQueueMutex);
+                message = std::move(queue.front());
+                queue.pop();
+            }
+
+            std::vector<uint8_t> buffer = EncodeToFAST(message);
+            udpClient.Send(buffer);
+
+            context.run();
+        }
     }
     catch (const std::exception& e)
     {

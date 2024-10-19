@@ -43,15 +43,9 @@ TEST(OrderBook, NotificationCallbackOnTrade)
     MarketFeedMessage message;
 
     book.SetTradeNotification(
-        [&](std::string_view symbol,
-            const OrderBook::BidsMap& bids,
-            const OrderBook::AsksMap& asks,
-            const Trade& trade)
+        [&](std::string_view symbol, const Trade& trade)
         {
-            message.m_Symbol = symbol;
-            message.m_Bids = bids;
-            message.m_Asks = asks;
-            message.m_Trade = trade;
+            message = MarketFeedMessage{symbol, trade};
         });
 
     Order order1{1, OrderAction::New, 100, 100, OrderSide::Buy, OrderType::Market};
@@ -59,21 +53,18 @@ TEST(OrderBook, NotificationCallbackOnTrade)
 
     book.AddOrder(order1);
 
-    EXPECT_EQ(message.m_Symbol, "AAPL");
-    EXPECT_EQ(message.m_Trade.price, 100);
-    EXPECT_EQ(message.m_Trade.quantity, 100);
-    EXPECT_EQ(message.m_Trade.side, OrderSide::Buy);
-    EXPECT_TRUE(message.m_Bids.contains(100));
-    EXPECT_TRUE(message.m_Asks.empty());
+    EXPECT_EQ(message.GetSymbol(), "AAPL");
+    EXPECT_EQ(message.GetTrade().price, 100);
+    EXPECT_EQ(message.GetTrade().quantity, 100);
+    EXPECT_EQ(message.GetTrade().side, OrderSide::Buy);
 
     book.AddOrder(order2);
 
-    EXPECT_TRUE(message.m_Asks.contains(100));
-    EXPECT_EQ(message.m_Trade.side, OrderSide::Sell);
+    EXPECT_EQ(message.GetTrade().side, OrderSide::Sell);
 
     book.MatchOrders();
 
-    EXPECT_EQ(message.m_Trade.price, 100);
-    EXPECT_EQ(message.m_Trade.quantity, 100);
-    EXPECT_EQ(message.m_Trade.side, OrderSide::Sell);
+    EXPECT_EQ(message.GetTrade().price, 100);
+    EXPECT_EQ(message.GetTrade().quantity, 100);
+    EXPECT_EQ(message.GetTrade().side, OrderSide::Sell);
 }
